@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main  # Triggers the workflow on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Specify the Python version you are using
+
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        .venv/bin/pip install --upgrade pip
+        .venv/bin/pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        .venv/bin/pytest
+
+    - name: Deploy to server
+      run: |
+        echo "Deploying to server..."
+        # Add your deployment commands here
+
+    - name: Post Deployment Notification
+      if: always()
+      run: |
+        echo "Deployment complete!"
