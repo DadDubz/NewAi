@@ -30,11 +30,40 @@ jobs:
         source .venv/bin/activate
         pytest
 
-    - name: Run Flask application
+    - name: Start SSH agent
       run: |
-        source .venv/bin/activate
-        python app.py
+        eval "$(ssh-agent -s)"
+        ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+      shell: bash
+
+    - name: Add SSH known hosts
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      shell: bash
+
+    - name: Deploy to server
       env:
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+        WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+        WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+      run: |
+        scp -r . $REMOTE_USER@$REMOTE_HOST:/var/www/newai
+        ssh $REMOTE_USER@$REMOTE_HOST "cd /var/www/newai && ./deploy.sh"
+      shell: bash
+
+    - name: Post Deployment Notification
+      if: always()
+      run: |
+        echo "Deployment complete!"
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+        WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+        WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
