@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main  # Triggers the workflow on push to the main branch
+      - main
 
 jobs:
   build:
@@ -11,18 +11,25 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.8'  # Specify the Python version you are using
+        python-version: '3.8'
 
     - name: Install dependencies
       run: |
         python -m venv .venv
         .venv/bin/pip install --upgrade pip
         .venv/bin/pip install -r requirements.txt
+
+    - name: Set up environment variables
+      run: |
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+        echo "PRINTFUL_API_KEY=${{ secrets.PRINTFUL_API_KEY }}" >> $GITHUB_ENV
+        echo "WIX_API_KEY=${{ secrets.WIX_API_KEY }}" >> $GITHUB_ENV
+        echo "WIX_ACCOUNT_ID=${{ secrets.WIX_ACCOUNT_ID }}" >> $GITHUB_ENV
 
     - name: Run tests
       run: |
