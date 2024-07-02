@@ -87,4 +87,26 @@ def create_product(printfile_url, name, price, product_type):
         print(f"Error creating product on Printful: {e}")
         return None
 
-def create_wix_product(product_id, name,
+def create_wix_product(product_id, name, price, description, imageUrl, inventory, sku):
+    try:
+        product_data = {
+            'name': name,
+            'price': price,
+            'description': description,
+            'images': [imageUrl],
+            'inventory': {'in_stock': inventory},
+            'sku': sku,
+        }
+        response = requests.post(
+            f'https://www.wixapis.com/stores/v1/products',
+            headers={
+                'Authorization': f'Bearer {WIX_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            data=json.dumps(product_data)
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating product on Wix: {e}")
+        return None
