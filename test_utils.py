@@ -1,5 +1,9 @@
+import pytest
 from unittest.mock import patch, Mock
 from utils import upload_image
+
+def test_example():
+    assert True
 
 @patch('utils.requests.post')
 def test_upload_image(mock_post):
@@ -18,3 +22,4 @@ def test_upload_image(mock_post):
     
     assert result is not None
     assert 'mockup_file_url' in result
+
