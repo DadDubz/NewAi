@@ -46,10 +46,6 @@ jobs:
       env:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
-        WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
-        WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
       run: |
         scp -r . $REMOTE_USER@$REMOTE_HOST:/var/www/newai
         ssh $REMOTE_USER@$REMOTE_HOST "cd /var/www/newai && ./deploy.sh"
@@ -60,10 +56,6 @@ jobs:
       run: |
         echo "Deployment complete!"
       env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
-        WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
-        WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
