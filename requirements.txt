@@ -1,5 +1,5 @@
 Flask==2.0.2
 requests==2.26.0
 python-dotenv==0.19.2
-openai==0.10.0
-pytest==7.1.2  # Add this line
+openai==0.10.0  # Ensure this is included and correct
+pytest==7.1.2
