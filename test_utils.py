@@ -10,7 +10,7 @@ def test_upload_image(mock_post):
     mock_response = Mock()
     mock_response.json.return_value = {
         'result': {
-            'mockup_file_url': 'http://example.com/mockup.png'
+            'mockup_file_url': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/PNG_Test.png/715px-PNG_Test.png?20240527104658'
         }
     }
     mock_response.raise_for_status = Mock()
@@ -21,5 +21,5 @@ def test_upload_image(mock_post):
     result = upload_image(image_path)
     
     assert result is None
-    assert 'mockup_file_url' in result
+    assert 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/PNG_Test.png/715px-PNG_Test.png?20240527104658' in result
 
