@@ -110,3 +110,4 @@ def create_wix_product(product_id, name, price, description, imageUrl, inventory
     except requests.exceptions.RequestException as e:
         print(f"Error creating product on Wix: {e}")
         return None
+
