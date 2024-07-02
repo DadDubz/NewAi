@@ -20,6 +20,6 @@ def test_upload_image(mock_post):
     
     result = upload_image(image_path)
     
-    assert result is not None
+    assert result is None
     assert 'mockup_file_url' in result
 
