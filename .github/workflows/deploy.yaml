@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Updated to use Node.js 20
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4  # Explicitly specify the latest version
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
@@ -31,10 +31,9 @@ jobs:
         pytest
 
     - name: Start SSH agent
-      run: |
-        eval "$(ssh-agent -s)"
-        ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
-      shell: bash
+      uses: webfactory/ssh-agent@v0.5.3  # Ensure using a compatible version
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Add SSH known hosts
       run: |
@@ -60,3 +59,4 @@ jobs:
         PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
         WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+
