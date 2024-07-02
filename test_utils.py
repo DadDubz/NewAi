@@ -4,7 +4,6 @@ def test_example():
     assert True
 
 def test_generate_image():
-    # Assuming you have a function named generate_image in utils.py
     from utils import generate_image
     prompt = "example prompt"
     image_path, image_url = generate_image(prompt)
