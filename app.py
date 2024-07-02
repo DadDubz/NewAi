@@ -1,7 +1,4 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-
+import os
 from flask import Flask, request, jsonify
 from utils import generate_image, upload_image, create_product, create_wix_product
 
@@ -16,7 +13,11 @@ def generate_design():
     if not prompt:
         return jsonify({'message': 'Invalid input parameters'}), 400
     
-    image_path, image_url = generate_image(prompt, size)
+    try:
+        image_path, image_url = generate_image(prompt, size)
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while generating the design: {str(e)}'}), 500
+
     if not image_path:
         return jsonify({'message': 'An error occurred while generating the design'}), 500
 
@@ -25,4 +26,5 @@ def generate_design():
     return jsonify({'message': 'Design generated successfully', 'designId': image_path, 'imageUrl': image_url})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+    app.run(debug=debug_mode)
