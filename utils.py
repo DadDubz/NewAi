@@ -13,11 +13,6 @@ PRINTFUL_API_KEY = os.getenv('PRINTFUL_API_KEY')
 WIX_API_KEY = os.getenv('WIX_API_KEY')
 WIX_ACCOUNT_ID = os.getenv('WIX_ACCOUNT_ID')
 
-print(f"OpenAI API Key: {OPENAI_API_KEY}")
-print(f"Printful API Key: {PRINTFUL_API_KEY}")
-print(f"Wix API Key: {WIX_API_KEY}")
-print(f"Wix Account ID: {WIX_ACCOUNT_ID}")
-
 openai.api_key = OPENAI_API_KEY
 
 # Map product types to Printful variant IDs (example values)
@@ -37,7 +32,6 @@ def generate_image(prompt, size='1024x1024'):
             n=1,
             size=size
         )
-        print(f"OpenAI Response: {response}")
         image_url = response['data'][0]['url']
         image_data = requests.get(image_url).content
         with open('generated_image.png', 'wb') as handler:
@@ -56,7 +50,6 @@ def upload_image(image_path):
                 files={'file': image_file}
             )
         response.raise_for_status()
-        print(f"Printful Response: {response.json()}")
         return response.json()['result']
     except requests.exceptions.RequestException as e:
         print(f"Error uploading image: {e}")
@@ -89,42 +82,9 @@ def create_product(printfile_url, name, price, product_type):
             data=json.dumps(product_data)
         )
         response.raise_for_status()
-        print(f"Printful Product Response: {response.json()}")
         return response.json()['result']
     except requests.exceptions.RequestException as e:
         print(f"Error creating product on Printful: {e}")
         return None
 
-def create_wix_product(product_id, name, price, description, imageUrl, inventory, sku):
-    try:
-        product_data = {
-            'name': name,
-            'price': price,
-            'description': description,
-            'images': [imageUrl],
-            'inventory': {'in_stock': inventory},
-            'sku': sku,
-        }
-        response = requests.post(
-            f'https://www.wixapis.com/stores/v1/products',
-            headers={
-                'Authorization': f'Bearer {WIX_API_KEY}',
-                'Content-Type': 'application/json'
-            },
-            data=json.dumps(product_data)
-        )
-        response.raise_for_status()
-        print(f"Wix Product Response: {response.json()}")
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error creating product on Wix: {e}")
-        return None
-
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error creating product on Wix: {e}")
-        return None
-    
-        print(f"Error creating product on Wix: {e}")
-        return None
-    
+def create_wix_product(product_id, name,
