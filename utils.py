@@ -111,3 +111,4 @@ def create_wix_product(product_id, name, price, description, imageUrl, inventory
         print(f"Error creating product on Wix: {e}")
         return None
 
+
