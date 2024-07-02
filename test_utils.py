@@ -1,12 +1,20 @@
-# test_utils.py
+from unittest.mock import patch, Mock
+from utils import upload_image
 
-def test_example():
-    assert True
+@patch('utils.requests.post')
+def test_upload_image(mock_post):
+    mock_response = Mock()
+    mock_response.json.return_value = {
+        'result': {
+            'mockup_file_url': 'http://example.com/mockup.png'
+        }
+    }
+    mock_response.raise_for_status = Mock()
+    mock_post.return_value = mock_response
 
-def test_generate_image():
-    from utils import generate_image
-    prompt = "example prompt"
-    image_path, image_url = generate_image(prompt)
-    assert image_path is not None
-    assert image_url is not None
-
+    image_path = 'sample_image.png'
+    
+    result = upload_image(image_path)
+    
+    assert result is not None
+    assert 'mockup_file_url' in result
