@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set your application's directory
-APP_DIR="/var/www/newai"  # Update this path to the actual path on your remote server
+APP_DIR="/var/www/newai"
 
 # Navigate to the app directory
 cd $APP_DIR
