@@ -9,3 +9,4 @@ def test_generate_image():
     image_path, image_url = generate_image(prompt)
     assert image_path is not None
     assert image_url is not None
+
