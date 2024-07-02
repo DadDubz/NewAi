@@ -25,10 +25,14 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Install pytest
+      run: |
+        source .venv/bin/activate
+        pip install pytest
+
     - name: Run tests
       run: |
         source .venv/bin/activate
-        pip install pytest  # Ensure pytest is installed
         pytest
 
     - name: Start SSH agent
@@ -61,4 +65,3 @@ jobs:
         PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
         WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
-
