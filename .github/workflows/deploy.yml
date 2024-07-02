@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        node-version: '20'  # Explicitly specify Node.js 20
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -59,4 +61,3 @@ jobs:
         PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
         WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
-
