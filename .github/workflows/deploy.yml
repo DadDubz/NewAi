@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -28,13 +29,6 @@ jobs:
       run: |
         source .venv/bin/activate
         pytest
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Start SSH agent
       uses: webfactory/ssh-agent@v0.5.3
