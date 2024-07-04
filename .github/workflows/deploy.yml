@@ -52,8 +52,8 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           FLASK_DEBUG: 'False'
         run: |
-          scp -r . $REMOTE_USER@$REMOTE_HOST:/var/www/newai
-          ssh $REMOTE_USER@$REMOTE_HOST "cd /var/www/newai && ./deploy.sh"
+          scp -r . ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/var/www/newai
+          ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "cd /var/www/newai && ./deploy.sh"
         shell: bash
 
       - name: Post Deployment Notification
