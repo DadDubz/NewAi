@@ -33,7 +33,7 @@ def generate_image(prompt, size='1024x1024'):
             size=size
         )
         image_url = response['data'][0]['url']
-        image_data = requests.get(image_url).content
+        image_data = requests.get(image_url, allow_redirects=False).content
         with open('generated_image.png', 'wb') as handler:
             handler.write(image_data)
         return 'generated_image.png', image_url
@@ -47,7 +47,8 @@ def upload_image(image_path):
             response = requests.post(
                 'https://api.printful.com/mockup-generator/create-task/12',
                 headers={'Authorization': f'Bearer {PRINTFUL_API_KEY}'},
-                files={'file': image_file}
+                files={'file': image_file},
+                allow_redirects=False
             )
         response.raise_for_status()
         return response.json()['result']
@@ -79,7 +80,8 @@ def create_product(printfile_url, name, price, product_type):
                 'Authorization': f'Bearer {PRINTFUL_API_KEY}',
                 'Content-Type': 'application/json'
             },
-            data=json.dumps(product_data)
+            data=json.dumps(product_data),
+            allow_redirects=False
         )
         response.raise_for_status()
         return response.json()['result']
@@ -103,12 +105,11 @@ def create_wix_product(product_id, name, price, description, imageUrl, inventory
                 'Authorization': f'Bearer {WIX_API_KEY}',
                 'Content-Type': 'application/json'
             },
-            data=json.dumps(product_data)
+            data=json.dumps(product_data),
+            allow_redirects=False
         )
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error creating product on Wix: {e}")
         return None
-
-
