@@ -1,6 +1,10 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from utils import generate_image, upload_image, create_product, create_wix_product
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
