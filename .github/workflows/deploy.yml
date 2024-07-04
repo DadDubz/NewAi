@@ -35,6 +35,15 @@ jobs:
           source .venv/bin/activate
           pytest
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -61,6 +70,10 @@ jobs:
         run: |
           echo "Deployment complete!"
         env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+          WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
           WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
