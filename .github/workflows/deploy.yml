@@ -74,7 +74,4 @@ jobs:
           PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
           WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
           WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
-          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
-          WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+          
