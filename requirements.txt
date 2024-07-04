@@ -1,5 +1,5 @@
-Flask==2.0.2
+Flask==2.2.5
 requests==2.26.0
 python-dotenv==0.19.2
-openai==0.10.0  # Ensure this is included and correct
+openai==0.10.0
 pytest==7.1.2
