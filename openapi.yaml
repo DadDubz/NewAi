@@ -1,0 +1,258 @@
+openapi: 3.1.0
+info:
+  title: Canvas Print Design API
+  description: API for generating and managing canvas print designs using OpenAI's DALL-E 3, Printful, and Wix.
+  version: "1.0.0"
+servers:
+  - url: 'http://3.138.142.43:5000'
+paths:
+  /designs/generate:
+    post:
+      summary: Generate a new design using DALL-E 3
+      operationId: generateNewDesign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: The prompt to generate the image
+                  example: "90s music bands vibrant abstract"
+                size:
+                  type: string
+                  description: The size of the image
+                  example: "1024x1024"
+              required:
+                - prompt
+                - size
+      responses:
+        '200':
+          description: Design generation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Design generated successfully'
+                  designId:
+                    type: string
+                    example: 'design12345'
+                  imageUrl:
+                    type: string
+                    example: 'https://example.com/generated_image.png'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid input parameters'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'An error occurred while generating the design'
+  /images/upload:
+    post:
+      summary: Upload an image to Printful
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+      responses:
+        '200':
+          description: Image upload successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Image uploaded successfully'
+                  mockupFileUrl:
+                    type: string
+                    example: 'https://example.com/mockup_image.png'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid input parameters'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'An error occurred while uploading the image'
+  /products/create:
+    post:
+      summary: Create a new canvas product on Printful
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                printfileUrl:
+                  type: string
+                  description: URL of the print file to use for the product
+                  example: 'https://example.com/printfile_image.png'
+                name:
+                  type: string
+                  description: Name of the product
+                  example: '90s Music Band Canvas Print'
+                price:
+                  type: number
+                  description: Retail price of the product
+                  example: 29.99
+              required:
+                - printfileUrl
+                - name
+                - price
+      responses:
+        '200':
+          description: Product creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product created successfully'
+                  productId:
+                    type: string
+                    example: 'product12345'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid input parameters'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'An error occurred while creating the product'
+  /wix/products/create:
+    post:
+      summary: Create a new product on Wix
+      operationId: createWixProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                  description: The ID of the product created on Printful
+                  example: 'product12345'
+                name:
+                  type: string
+                  description: Name of the product
+                  example: '90s Music Band Canvas Print'
+                price:
+                  type: number
+                  description: Retail price of the product
+                  example: 29.99
+                description:
+                  type: string
+                  description: Description of the product
+                  example: 'A vibrant canvas print of 90s music bands.'
+                imageUrl:
+                  type: string
+                  description: URL of the product image
+                  example: 'https://example.com/product_image.png'
+                inventory:
+                  type: integer
+                  description: Inventory count for the product
+                  example: 100
+                sku:
+                  type: string
+                  description: Stock keeping unit for the product
+                  example: 'product12345'
+              required:
+                - productId
+                - name
+                - price
+                - description
+                - imageUrl
+                - inventory
+                - sku
+      responses:
+        '200':
+          description: Wix product creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Wix product created successfully'
+                  wixProductId:
+                    type: string
+                    example: 'wixProduct12345'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid input parameters'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'An error occurred while creating the Wix product'
