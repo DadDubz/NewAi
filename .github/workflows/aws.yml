@@ -7,10 +7,10 @@ on:
 env:
   AWS_REGION: us-east-2                   # Set this to your AWS region
   ECR_REPOSITORY: dubzai              # Replace with your Amazon ECR repository name
-  ECS_SERVICE: newai-service              # Replace with your Amazon ECS service name
-  ECS_CLUSTER: newai2              # Replace with your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/task-definition.json # Ensure this path is correct and the file exists
-  CONTAINER_NAME: newai-container         # Replace with the container name in your task definition
+  ECS_SERVICE: AWSApp2Container-ReplatformApplications              # Replace with your Amazon ECS service name
+  ECS_CLUSTER: cluster-1              # Replace with your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: newai-task:1 # Ensure this path is correct and the file exists
+  CONTAINER_NAME: dubzai         # Replace with the container name in your task definition
 
 permissions:
   contents: read
