@@ -5,12 +5,12 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-east-2                   # Your AWS region
-  ECR_REPOSITORY: newai-repo              # Your Amazon ECR repository name (replace with actual name)
-  ECS_SERVICE: newai-service              # Your Amazon ECS service name (replace with actual name)
-  ECS_CLUSTER: newai-cluster              # Your Amazon ECS cluster name (replace with actual name)
-  ECS_TASK_DEFINITION: .aws/task-definition.json # Path to your Amazon ECS task definition file
-  CONTAINER_NAME: newai-container         # Name of the container in the containerDefinitions section of your task definition
+  AWS_REGION: us-east-2                   # Set this to your AWS region
+  ECR_REPOSITORY: newai-repo              # Replace with your Amazon ECR repository name
+  ECS_SERVICE: newai-service              # Replace with your Amazon ECS service name
+  ECS_CLUSTER: newai-cluster              # Replace with your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: .aws/task-definition.json # Ensure this path is correct and the file exists
+  CONTAINER_NAME: newai-container         # Replace with the container name in your task definition
 
 permissions:
   contents: read
@@ -28,7 +28,6 @@ jobs:
     - name: Set executable permissions for scripts
       run: |
         chmod +x deploy.sh
-        chmod +x other_script.sh  # Add any other scripts that need execution permissions
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
