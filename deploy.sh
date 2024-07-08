@@ -9,8 +9,10 @@ git pull origin main
 # Activate the virtual environment
 source .venv/bin/activate
 
-# Install dependencies
+# Install any new dependencies
 pip install -r requirements.txt
 
-# Restart the Flask app (you may need to adjust this to match your setup)
+# Restart the application server (Assuming you are using gunicorn)
 sudo systemctl restart newai
+
+echo "Deployment complete!"
