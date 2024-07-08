@@ -40,6 +40,9 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
+    - name: Set permissions for deploy.sh
+      run: chmod +x deploy.sh
+
     - name: Deploy to server
       env:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
@@ -52,4 +55,3 @@ jobs:
     - name: Post Deployment Notification
       if: always()
       run: echo "Deployment complete!"
-          WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
