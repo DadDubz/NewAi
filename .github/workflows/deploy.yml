@@ -10,67 +10,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Install pytest
-        run: |
-          source .venv/bin/activate
-          pip install pytest
+    - name: Run tests
+      run: |
+        source .venv/bin/activate
+        pytest
 
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest
+    - name: Start SSH agent
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+    - name: Add SSH known hosts
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Install Node.js dependencies
-        run: |
-          npm install
+    - name: Deploy to server
+      env:
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+      run: |
+        scp -r . $REMOTE_USER@$REMOTE_HOST:/var/www/newai
+        ssh $REMOTE_USER@$REMOTE_HOST "cd /var/www/newai && ./deploy.sh"
+      shell: bash
 
-      - name: Start SSH agent
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add SSH known hosts
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-        shell: bash
-
-      - name: Deploy to server
-        env:
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          FLASK_DEBUG: 'False'
-        run: |
-          scp -r . ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/var/www/newai
-          ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "cd /var/www/newai && ./deploy.sh"
-        shell: bash
-
-      - name: Post Deployment Notification
-        if: always()
-        run: |
-          echo "Deployment complete!"
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
-          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+    - name: Post Deployment Notification
+      if: always()
+      run: echo "Deployment complete!"
           WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
