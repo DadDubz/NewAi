@@ -33,25 +33,4 @@ jobs:
     - name: Start SSH agent
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Add SSH known hosts
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-
-    - name: Set permissions for deploy.sh
-      run: chmod +x deploy.sh
-
-    - name: Deploy to server
-      env:
-        REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-      run: |
-        scp -r . $REMOTE_USER@$REMOTE_HOST:/var/www/newai
-        ssh $REMOTE_USER@$REMOTE_HOST "cd /var/www/newai && ./deploy.sh"
-      shell: bash
-
-    - name: Post Deployment Notification
-      if: always()
-      run: echo "Deployment complete!"
+        ssh-private-key: ${{ secrets.SSH_PRIVAT
