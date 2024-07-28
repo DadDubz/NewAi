@@ -5,12 +5,12 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-east-2                   # Set this to your AWS region
-  ECR_REPOSITORY: dubzai              # Replace with your Amazon ECR repository name
-  ECS_SERVICE: AWSApp2Container-ReplatformApplications              # Replace with your Amazon ECS service name
-  ECS_CLUSTER: cluster-1              # Replace with your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: newai-task:1 # Ensure this path is correct and the file exists
-  CONTAINER_NAME: dubzai         # Replace with the container name in your task definition
+  AWS_REGION: us-east-2b                   # Set this to your AWS region
+  ECR_REPOSITORY: NewAi               # Replace with your Amazon ECR repository name
+  ECS_SERVICE: 	AWSApp2Container-ReplatformApplications  # Replace with your Amazon ECS service name
+  ECS_CLUSTER: newai2                  # Replace with your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: newai-task       # Ensure this path is correct and the file exists
+  CONTAINER_NAME: githubai                 # Replace with the container name in your task definition
 
 permissions:
   contents: read
@@ -26,8 +26,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set executable permissions for scripts
-      run: |
-        chmod +x deploy.sh
+      run: chmod +x deploy.sh
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
